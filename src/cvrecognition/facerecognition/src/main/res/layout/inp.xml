@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <TextView
+        android:layout_width="201dp"
+        android:layout_height="50dp"
+        android:text="Person:"
+        android:layout_gravity="center_horizontal"
+        android:layout_row="0"
+        android:layout_column="1"
+        android:layout_weight="0.05" />
+
+    <EditText
+        android:id="@+id/nameOfP"
+        android:layout_width="217dp"
+        android:layout_height="wrap_content"
+        android:singleLine="false"
+        android:layout_row="0"
+        android:layout_column="7"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal" />
+
+    <TextView
+        android:layout_width="104dp"
+        android:layout_height="39dp"
+        android:text="NOTES HERE:"
+        android:layout_gravity="center_horizontal"
+        android:layout_row="0"
+        android:layout_column="1" />
+
+    <EditText
+        android:id="@+id/notes"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:singleLine="false"
+        android:layout_row="0"
+        android:layout_column="7"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.51" />
+
+    <Button
+        android:id="@+id/save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="save"
+        android:onClick="writer"
+        android:layout_row="16"
+        android:layout_column="2"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal" />
+
+</LinearLayout>
