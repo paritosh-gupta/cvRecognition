@@ -1,6 +1,9 @@
 #ignore autosave backup files
 *.*~
 
+#ignore log files
+*.log
+
 #ignore .hg files
 .hg/
 
