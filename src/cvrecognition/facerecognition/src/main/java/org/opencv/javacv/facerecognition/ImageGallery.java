@@ -34,6 +34,9 @@ import android.widget.ViewSwitcher;
 import us.feras.ecogallery.EcoGallery;
 import us.feras.ecogallery.EcoGallery.LayoutParams;
 import us.feras.ecogallery.EcoGalleryAdapterView;
+import android.view.MotionEvent;
+import android.database.Cursor;
+import android.widget.Toast;
  
 public class ImageGallery extends Activity implements
         AdapterView.OnItemSelectedListener, ViewSwitcher.ViewFactory {
@@ -43,11 +46,57 @@ public class ImageGallery extends Activity implements
 	int count=0;
 	Bitmap bmlist[];
 	String namelist[];
+
+    Bitmap multibmlist[][];
+    String multinamelist[][];
+
 	String mPath="";
 	TextView name;
 	Button buttonDel;
 	ImageButton buttonBack;
     EcoGallery ecoGallery;
+
+    float initialX;
+    private Cursor cursor;
+    private  int indeximage=0, parentposition = 0;
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        // TODO Auto-generated method stub
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                initialX = event.getX();
+                break;
+            case MotionEvent.ACTION_UP:
+                float finalX = event.getX();
+
+                if (initialX < finalX) {
+                    // Swipe Left
+                    if(indeximage==0) {
+                        Toast.makeText(getApplicationContext(), "Reached Beginning",
+                                Toast.LENGTH_SHORT).show();
+                    } else {
+                        indeximage--;
+                        mSwitcher.setImageDrawable(new BitmapDrawable(getResources(), multibmlist[parentposition][indeximage]));
+                        //name.setText(multinamelist[parentposition][indeximage--]);
+                        name.setText(Integer.toString(indeximage));
+                    }
+                } else {
+                    // Swipe Right
+                    if(indeximage<19) {
+                        indeximage++;
+                        mSwitcher.setImageDrawable(new BitmapDrawable(getResources(), multibmlist[parentposition][indeximage]));
+                        //name.setText(multinamelist[parentposition][indeximage++]);
+                        name.setText(Integer.toString(indeximage));
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Reached End",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                }
+                break;
+        }
+        return false;
+    }
 
 	
     @Override
@@ -57,7 +106,7 @@ public class ImageGallery extends Activity implements
         requestWindowFeature(Window.FEATURE_NO_TITLE);
  
         setContentView(R.layout.catalog_view);
-        name=(TextView)findViewById(R.id.textView1);
+        name=(TextView)findViewById(R.id.textView);
         buttonDel=(Button)findViewById(R.id.buttonDel);
         buttonBack=(ImageButton)findViewById(R.id.imageButton1);
 
@@ -89,6 +138,10 @@ public class ImageGallery extends Activity implements
     	
     	bmlist=new Bitmap[count];
     	namelist = new String[count];
+
+        multibmlist = new Bitmap[count][20];
+        multinamelist = new String[count][20];
+
     	count=0;
     	for (int i=0;i<=max;i++)
     	{
@@ -103,22 +156,39 @@ public class ImageGallery extends Activity implements
     	        };
     	        };
     	        File[] imageFiles = root.listFiles(pngFilter);
+
+                for(int j=0; j<imageFiles.length && j<20; j++) {
+                    InputStream is;
+                    try {
+                        is = new FileInputStream(imageFiles[j]);
+
+                        multibmlist[count][j]=BitmapFactory.decodeStream(is);
+                        multinamelist[count][j]=thelabels.get(i);
+
+                    } catch (FileNotFoundException e) {
+                        // TODO Auto-generated catch block
+                        Log.e("File erro", e.getMessage()+" "+e.getCause());
+                        e.printStackTrace();
+                    }
+                }
+
     	        if (imageFiles.length>0)
     	        {
     	        	InputStream is;
 					try {
 						is = new FileInputStream(imageFiles[0]);
-						
+
 						bmlist[count]=BitmapFactory.decodeStream(is);
 						namelist[count]=thelabels.get(i);
-						
+
 						} catch (FileNotFoundException e) {
 						// TODO Auto-generated catch block
 							Log.e("File erro", e.getMessage()+" "+e.getCause());
 							e.printStackTrace();
 					}
-    	        	
+
     	        }
+
     			count++;       			
     		}
     	}
@@ -129,14 +199,18 @@ public class ImageGallery extends Activity implements
                 new EcoGalleryAdapterView.OnItemSelectedListener() {
                     public void onItemSelected(EcoGalleryAdapterView<?> parent, View v, int position, long id) {
                         //mSwitcher.setImageURI(bmlist[0]);
-                        mSwitcher.setImageDrawable(new BitmapDrawable(getResources(),bmlist[position]));
-                        name.setText(namelist[position]);
+                        parentposition = position;
+                        indeximage=0;
+                        mSwitcher.setImageDrawable(new BitmapDrawable(getResources(),multibmlist[position][indeximage]));
+                        name.setText(multinamelist[position][indeximage]);
                     }
 
                     public void onNothingSelected(EcoGalleryAdapterView<?> parent) {
                     }
                 }
         );
+
+
         
         
         buttonBack.setOnClickListener(new View.OnClickListener() {
