@@ -2,10 +2,10 @@ apply plugin: 'android'
 
 android {
     compileSdkVersion 19
-    buildToolsVersion "19.0.3"
+    buildToolsVersion "19.1.0"
 
     defaultConfig {
-        packageName "org.opencv.javacv.facerecognition"
+        applicationId "org.opencv.javacv.facerecognition"
         minSdkVersion 11
         targetSdkVersion 19
     }
