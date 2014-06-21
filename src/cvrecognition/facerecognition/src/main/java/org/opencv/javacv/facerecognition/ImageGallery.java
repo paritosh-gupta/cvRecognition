@@ -25,13 +25,15 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.Gallery;
-import android.widget.Gallery.LayoutParams;
 import android.widget.ImageButton;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
+
+import us.feras.ecogallery.EcoGallery;
+import us.feras.ecogallery.EcoGallery.LayoutParams;
+import us.feras.ecogallery.EcoGalleryAdapterView;
  
 public class ImageGallery extends Activity implements
         AdapterView.OnItemSelectedListener, ViewSwitcher.ViewFactory {
@@ -45,7 +47,8 @@ public class ImageGallery extends Activity implements
 	TextView name;
 	Button buttonDel;
 	ImageButton buttonBack;
-	Gallery g;
+    EcoGallery ecoGallery;
+
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -120,9 +123,20 @@ public class ImageGallery extends Activity implements
     		}
     	}
 
-        g = (Gallery) findViewById(R.id.gallery1);
-        g.setAdapter(new ImageAdapter(this));
-        g.setOnItemSelectedListener(this);
+        ecoGallery = (EcoGallery) findViewById(R.id.gallery);
+        ecoGallery.setAdapter(new ImageAdapter(this));
+        ecoGallery.setOnItemSelectedListener(
+                new EcoGalleryAdapterView.OnItemSelectedListener() {
+                    public void onItemSelected(EcoGalleryAdapterView<?> parent, View v, int position, long id) {
+                        //mSwitcher.setImageURI(bmlist[0]);
+                        mSwitcher.setImageDrawable(new BitmapDrawable(getResources(),bmlist[position]));
+                        name.setText(namelist[position]);
+                    }
+
+                    public void onNothingSelected(EcoGalleryAdapterView<?> parent) {
+                    }
+                }
+        );
         
         
         buttonBack.setOnClickListener(new View.OnClickListener() {
@@ -174,7 +188,7 @@ public class ImageGallery extends Activity implements
     }
  
     public void refresh() {
-    	g.setAdapter(new ImageAdapter(this)); 
+        ecoGallery.setAdapter(new ImageAdapter(this));
     }
     
     public void onItemSelected(AdapterView<?> parent, View v, int position, long id) {
@@ -223,7 +237,7 @@ public class ImageGallery extends Activity implements
            // i.setImageResource(mThumbIds[position]);
          
             i.setAdjustViewBounds(true);
-            i.setLayoutParams(new Gallery.LayoutParams(
+            i.setLayoutParams(new EcoGallery.LayoutParams(
                     LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
  //           i.setBackgroundResource(R.drawable.picture_frame);
             return i;

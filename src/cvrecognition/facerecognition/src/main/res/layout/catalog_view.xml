@@ -15,10 +15,11 @@
             android:layout_weight="0.56"
             android:orientation="vertical" >
 
-            <Gallery
-                android:id="@+id/gallery1"
+            <us.feras.ecogallery.EcoGallery
+                android:id="@+id/gallery"
                 android:layout_width="match_parent"
-                android:layout_height="84dp" />
+                android:layout_height="84dp"
+                />
 
             <ImageSwitcher
                 android:id="@+id/switcher"

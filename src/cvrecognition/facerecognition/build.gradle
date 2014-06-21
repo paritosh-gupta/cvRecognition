@@ -2,19 +2,19 @@ apply plugin: 'android'
 
 android {
     compileSdkVersion 19
-    buildToolsVersion "19.1.0"
-
+    buildToolsVersion '19.1.0'
     defaultConfig {
-        applicationId "org.opencv.javacv.facerecognition"
+        applicationId 'org.opencv.javacv.facerecognition'
         minSdkVersion 11
         targetSdkVersion 19
     }
-
     buildTypes {
         release {
             runProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
+    }
+    productFlavors {
     }
 }
 
@@ -22,4 +22,5 @@ dependencies {
     compile project(':openCVLibrary249')
     compile files('libs/javacpp.jar')
     compile files('libs/javacv.jar')
+    compile project(':ecoGallery')
 }
