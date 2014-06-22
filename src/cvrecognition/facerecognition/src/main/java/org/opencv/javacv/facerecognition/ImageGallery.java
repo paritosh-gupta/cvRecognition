@@ -61,8 +61,8 @@ public class ImageGallery extends Activity implements
 	
 	labels thelabels;
 	int count=0;
-	Bitmap bmlist[];
-	String namelist[];
+	//Bitmap bmlist[];
+	//String namelist[];
 
     Bitmap multibmlist[][];
     String multinamelist[][];
@@ -152,8 +152,8 @@ public class ImageGallery extends Activity implements
     		}
     	}
     	
-    	bmlist=new Bitmap[count];
-    	namelist = new String[count];
+    	//bmlist=new Bitmap[count];
+    	//namelist = new String[count];
 
         multibmlist = new Bitmap[count][20];
         multinamelist = new String[count][20];
@@ -188,6 +188,8 @@ public class ImageGallery extends Activity implements
                     }
                 }
 
+                /*
+
     	        if (imageFiles.length>0)
     	        {
     	        	InputStream is;
@@ -204,6 +206,8 @@ public class ImageGallery extends Activity implements
 					}
 
     	        }
+
+    	        */
 
     			count++;       			
     		}
@@ -251,28 +255,18 @@ public class ImageGallery extends Activity implements
     	        };
     	        File[] imageFiles = root.listFiles(pngFilter);
     	        for (File image : imageFiles) {
-    	        	image.delete();
-    	        int i;
-    	        for (i=0;i<count;i++)
-    	        {
-    	        	if (namelist[i].equalsIgnoreCase(name.getText().toString()))
-    	        			{
-    	        			  int j;
-    	        			  for (j=i;j<count-1;j++)
-    	        			  {
-    	        				  namelist[j]=namelist[j+1];
-    	        				  bmlist[j]=bmlist[j+1];
-    	        			  }
-    	        			  count--;
-    	        			  refresh();
-    	        			  //     	        			  finish();
-    	        			  // startActivity(getIntent());
-    	        			  
-    	        			  //
-    	        			  break;
-    	        			}
-    	        }
-    	        }
+                    image.delete();
+
+                    for(int i=parentposition; i<count-1; i++) {
+
+                        System.arraycopy(multibmlist[i + 1], 0, multibmlist[i], 0, multibmlist[i + 1].length);
+                        System.arraycopy(multinamelist[i + 1], 0, multinamelist[i], 0, multinamelist[i + 1].length);
+
+                    }
+                }
+
+                count--;
+                refresh();
         	}
         });
     }
@@ -283,8 +277,8 @@ public class ImageGallery extends Activity implements
     
     public void onItemSelected(AdapterView<?> parent, View v, int position, long id) {
         //mSwitcher.setImageURI(bmlist[0]);
-    	mSwitcher.setImageDrawable(new BitmapDrawable(getResources(),bmlist[position]));
-    	name.setText(namelist[position]);
+    	mSwitcher.setImageDrawable(new BitmapDrawable(getResources(),multibmlist[position][0]));
+    	name.setText(multinamelist[position][0]);
     }
  
     public void onNothingSelected(AdapterView<?> parent) {
@@ -313,7 +307,7 @@ public class ImageGallery extends Activity implements
         }
  
         public Object getItem(int position) {
-            return bmlist[position];
+            return multibmlist[position][0];
         }
  
         public long getItemId(int position) {
@@ -322,7 +316,7 @@ public class ImageGallery extends Activity implements
  
         public View getView(int position, View convertView, ViewGroup parent) {
             ImageView i = new ImageView(mContext);
-            i.setImageBitmap(bmlist[position]);
+            i.setImageBitmap(multibmlist[position][0]);
             
            // i.setImageResource(mThumbIds[position]);
          
