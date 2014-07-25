@@ -23,4 +23,7 @@ dependencies {
     compile files('libs/javacpp.jar')
     compile files('libs/javacv.jar')
     compile project(':ecoGallery')
+    // You must install or update the Google Repository through the SDK manager to use this dependency.
+    compile 'com.google.android.gms:play-services:4.2.42'
+    compile 'com.android.support:appcompat-v7:19.+'
 }
